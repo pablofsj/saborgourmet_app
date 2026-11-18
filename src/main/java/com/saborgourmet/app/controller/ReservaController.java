@@ -39,11 +39,14 @@ public class ReservaController {
     }
 
     @GetMapping("/nueva")
-    public String nueva(@RequestParam LocalDate fecha,
-                        @RequestParam LocalTime hora,
+    public String nueva(@RequestParam(required = false) LocalDate fecha,
+                        @RequestParam(required = false) LocalTime hora,
                         @RequestParam(defaultValue = "2") Integer personas,
                         Model model,
                         RedirectAttributes redirectAttributes) {
+        if (fecha == null || hora == null) {
+            return "redirect:/";
+        }
         List<Mesa> disponibles;
         try {
             reservaService.validarSolicitud(fecha, hora, personas);
