@@ -30,7 +30,7 @@
         <label class="field">
             <span>Personas</span>
             <select name="personas">
-                <option th:each="n : ${#numbers.sequence(1, 12)}" th:value="${n}" th:text="${n}"
+                <option th:each="n : ${#numbers.sequence(1, 5)}" th:value="${n}" th:text="${n}"
                         th:selected="${n == form.personas}">2</option>
             </select>
         </label>
@@ -54,7 +54,6 @@
                         <span class="mesa-cap" th:text="${mesa.capacidad} + ' pers.'">2 pers.</span>
                     </span>
                     <span class="mesa-zona" th:text="${mesa.zona.etiqueta}">Salón</span>
-                    <span class="mesa-desc" th:text="${mesa.descripcion}">Descripción</span>
                     <span class="mesa-check" aria-hidden="true"></span>
                 </label>
             </div>

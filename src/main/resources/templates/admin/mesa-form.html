@@ -25,7 +25,7 @@
             </label>
             <label class="field">
                 <span>Capacidad (personas)</span>
-                <input type="number" min="1" max="12" th:field="*{capacidad}" required>
+                <input type="number" min="2" max="5" th:field="*{capacidad}" required>
                 <span class="field-error" th:if="${#fields.hasErrors('capacidad')}" th:errors="*{capacidad}"></span>
             </label>
             <label class="field">
@@ -36,10 +36,6 @@
                             th:value="${z}" th:text="${z.etiqueta}">Salón</option>
                 </select>
                 <span class="field-error" th:if="${#fields.hasErrors('zona')}" th:errors="*{zona}"></span>
-            </label>
-            <label class="field">
-                <span>Descripción</span>
-                <input type="text" th:field="*{descripcion}" maxlength="160">
             </label>
             <label class="field field--check field--full">
                 <input type="checkbox" th:field="*{activa}">

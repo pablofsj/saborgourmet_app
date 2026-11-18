@@ -21,7 +21,12 @@
 <header th:fragment="navbar" class="site-header">
     <div class="shell nav">
         <a class="brand" th:href="@{/}">
-            <span class="brand-mark" aria-hidden="true"></span>
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M7 2.5v6M9.5 2.5v6M12 2.5v6M7 8.5h5v2.5a2.5 2.5 0 0 1-5 0V8.5ZM9.5 13.5v8"></path>
+                    <path d="M17 2.5c2 3.5 2 8 0 11v8"></path>
+                </svg>
+            </span>
             <span class="brand-text">Sabor<strong>Gourmet</strong></span>
         </a>
         <nav class="nav-links" aria-label="Navegación principal">
@@ -55,16 +60,15 @@
         </div>
         <div>
             <h2 class="footer-title">Horarios</h2>
-            <p class="muted">Almuerzo: 12:00 – 15:30<br>Cena: 19:00 – 22:30</p>
+            <p class="muted">Todos los días<br>12:00 – 22:00</p>
         </div>
         <div>
-            <h2 class="footer-title">Visítanos</h2>
-            <p class="muted">Av. Los Pliegues 480, Providencia<br>+56 2 2345 6789</p>
+            <h2 class="footer-title">Contacto</h2>
+            <p class="muted">+56 2 2345 6789<br>reservas@saborgourmet.cl</p>
         </div>
     </div>
     <div class="shell footer-bottom">
         <span>© 2026 Sabor Gourmet</span>
-        <span>Sistema de reservas · Spring Boot + Thymeleaf</span>
     </div>
 </footer>
 

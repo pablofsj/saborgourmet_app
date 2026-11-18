@@ -19,14 +19,13 @@
         <div class="table-wrap">
             <table class="table-actions">
                 <thead>
-                <tr><th>Mesa</th><th>Capacidad</th><th>Zona</th><th>Descripción</th><th>Estado</th><th>Acciones</th></tr>
+                <tr><th>Mesa</th><th>Capacidad</th><th>Zona</th><th>Estado</th><th>Acciones</th></tr>
                 </thead>
                 <tbody>
                 <tr th:each="mesa : ${mesas}">
                     <td><strong th:text="${mesa.etiqueta}">Mesa 1</strong></td>
                     <td th:text="${mesa.capacidad} + ' personas'">2 personas</td>
-                    <td th:text="${mesa.zona.etiqueta}">Ventana</td>
-                    <td class="muted small" th:text="${mesa.descripcion}">Descripción</td>
+                    <td th:text="${mesa.zona.etiqueta}">Salón</td>
                     <td>
                         <span class="badge" th:classappend="${mesa.activa} ? ' badge--confirmada' : ' badge--cancelada'"
                               th:text="${mesa.activa} ? 'Activa' : 'Inactiva'">Activa</span>

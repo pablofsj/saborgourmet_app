@@ -170,11 +170,24 @@ a:hover {
 }
 
 .brand-mark {
-    width: 26px;
-    height: 26px;
-    background: linear-gradient(160deg, var(--accent) 0 55%, var(--accent-2) 55% 100%);
-    clip-path: polygon(50% 0, 100% 82%, 50% 100%, 0 82%);
-    display: inline-block;
+    width: 34px;
+    height: 34px;
+    display: inline-grid;
+    place-items: center;
+    padding: 6px;
+    color: var(--accent);
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+}
+
+.brand-mark svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .nav-links {
@@ -614,6 +627,12 @@ a:hover {
     gap: 1.2rem;
 }
 
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem;
+}
+
 .feature-num {
     display: block;
     font-size: 1.6rem;
@@ -653,12 +672,8 @@ a:hover {
     background: var(--surface);
 }
 
-.ambiente--ventana {
+.ambiente--terraza {
     background: color-mix(in srgb, var(--accent-2) 22%, var(--surface));
-}
-
-.ambiente--privado {
-    background: color-mix(in srgb, var(--accent) 20%, var(--surface));
 }
 
 .ambiente h3,
@@ -778,11 +793,6 @@ a:hover {
     text-transform: uppercase;
     color: var(--accent);
     font-weight: 700;
-}
-
-.mesa-desc {
-    font-size: .8rem;
-    color: var(--muted);
 }
 
 .mesa-check {
@@ -1125,6 +1135,7 @@ tbody tr:hover {
     .booking-layout,
     .admin-grid,
     .grid-3,
+    .grid-2,
     .stats,
     .footer-grid {
         grid-template-columns: 1fr;
