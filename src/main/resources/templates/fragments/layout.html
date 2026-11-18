@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' · Sabor Gourmet'">Sabor Gourmet</title>
+    <script>
+        (function () {
+            var guardado = localStorage.getItem('sg-theme');
+            if (guardado) {
+                document.documentElement.dataset.theme = guardado;
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.dataset.theme = 'dark';
+            }
+        })();
+    </script>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<header th:fragment="navbar" class="site-header">
+    <div class="shell nav">
+        <a class="brand" th:href="@{/}">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span class="brand-text">Sabor<strong>Gourmet</strong></span>
+        </a>
+        <nav class="nav-links" aria-label="Navegación principal">
+            <a th:href="@{/}">Inicio</a>
+            <a th:href="@{/reservas/buscar}">Mis reservas</a>
+            <a th:href="@{/admin}">Administración</a>
+        </nav>
+        <button type="button" class="theme-toggle" data-theme-toggle
+                aria-label="Cambiar entre modo claro y oscuro">
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"></path>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"></path>
+            </svg>
+        </button>
+    </div>
+</header>
+
+<div th:fragment="flash" class="flash-stack shell">
+    <div class="alert alert--ok" th:if="${exito}" role="status" th:text="${exito}"></div>
+    <div class="alert alert--error" th:if="${error}" role="alert" th:text="${error}"></div>
+</div>
+
+<footer th:fragment="footer" class="site-footer">
+    <div class="shell footer-grid">
+        <div>
+            <p class="brand-text">Sabor<strong>Gourmet</strong></p>
+            <p class="muted">Cocina de autor con alma de barrio. Reserva tu mesa y déjanos el resto a nosotros.</p>
+        </div>
+        <div>
+            <h2 class="footer-title">Horarios</h2>
+            <p class="muted">Almuerzo: 12:00 – 15:30<br>Cena: 19:00 – 22:30</p>
+        </div>
+        <div>
+            <h2 class="footer-title">Visítanos</h2>
+            <p class="muted">Av. Los Pliegues 480, Providencia<br>+56 2 2345 6789</p>
+        </div>
+    </div>
+    <div class="shell footer-bottom">
+        <span>© 2026 Sabor Gourmet</span>
+        <span>Sistema de reservas · Spring Boot + Thymeleaf</span>
+    </div>
+</footer>
+
+</body>
+</html>

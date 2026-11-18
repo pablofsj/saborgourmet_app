@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Configuración de mesas')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: flash}"></div>
+
+<main class="shell section">
+    <div class="section-head section-head--row">
+        <div>
+            <p class="eyebrow">Administración</p>
+            <h1>Mesas del restaurante</h1>
+            <p class="lead">Las mesas desactivadas dejan de ofrecerse en las reservas en línea sin perder su historial.</p>
+        </div>
+        <a class="btn btn--primary" th:href="@{/admin/mesas/nueva}">+ Nueva mesa</a>
+    </div>
+
+    <div class="panel">
+        <div class="table-wrap">
+            <table class="table-actions">
+                <thead>
+                <tr><th>Mesa</th><th>Capacidad</th><th>Zona</th><th>Descripción</th><th>Estado</th><th>Acciones</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="mesa : ${mesas}">
+                    <td><strong th:text="${mesa.etiqueta}">Mesa 1</strong></td>
+                    <td th:text="${mesa.capacidad} + ' personas'">2 personas</td>
+                    <td th:text="${mesa.zona.etiqueta}">Ventana</td>
+                    <td class="muted small" th:text="${mesa.descripcion}">Descripción</td>
+                    <td>
+                        <span class="badge" th:classappend="${mesa.activa} ? ' badge--confirmada' : ' badge--cancelada'"
+                              th:text="${mesa.activa} ? 'Activa' : 'Inactiva'">Activa</span>
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <a class="btn btn--tiny btn--ghost"
+                               th:href="@{/admin/mesas/{id}/editar(id=${mesa.id})}">Editar</a>
+                            <form method="post" th:action="@{/admin/mesas/{id}/estado(id=${mesa.id})}"
+                                  th:attr="data-confirm=${mesa.activa ? '¿Desactivar esta mesa? No se ofrecerá en nuevas reservas.' : null}">
+                                <button type="submit" class="btn btn--tiny"
+                                        th:classappend="${mesa.activa} ? ' btn--danger' : ''"
+                                        th:text="${mesa.activa} ? 'Desactivar' : 'Activar'">Desactivar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="muted" th:if="${#lists.isEmpty(mesas)}">Todavía no hay mesas configuradas.</p>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>

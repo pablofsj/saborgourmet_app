@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Panel de administración')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: flash}"></div>
+
+<main class="shell section">
+    <div class="section-head">
+        <p class="eyebrow">Administración</p>
+        <h1>Panel del restaurante</h1>
+        <p class="lead" th:text="'Resumen de operación para el ' + ${hoy}">Resumen de operación</p>
+    </div>
+
+    <div class="stats">
+        <article class="panel stat">
+            <span class="stat-label">Reservas activas hoy</span>
+            <strong class="stat-value" th:text="${totalReservasHoy}">5</strong>
+        </article>
+        <article class="panel stat">
+            <span class="stat-label">Comensales hoy</span>
+            <strong class="stat-value" th:text="${comensalesHoy}">17</strong>
+        </article>
+        <article class="panel stat">
+            <span class="stat-label">Mesas activas</span>
+            <strong class="stat-value" th:text="${mesasActivas}">10</strong>
+        </article>
+        <article class="panel stat">
+            <span class="stat-label">Confirmadas / canceladas</span>
+            <strong class="stat-value" th:text="${confirmadas} + ' / ' + ${canceladas}">6 / 1</strong>
+        </article>
+    </div>
+
+    <div class="admin-grid">
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Reservas de hoy</h2>
+                <a class="link" th:href="@{/admin/reservas}">Ver por fecha →</a>
+            </div>
+            <div class="table-wrap" th:if="${!#lists.isEmpty(reservasHoy)}">
+                <table>
+                    <thead>
+                    <tr><th>Hora</th><th>Cliente</th><th>Mesa</th><th>Pers.</th><th>Estado</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="reserva : ${reservasHoy}">
+                        <td th:text="${reserva.horaTexto}">20:00</td>
+                        <td th:text="${reserva.cliente.nombre}">María</td>
+                        <td th:text="${reserva.mesa.etiqueta}">Mesa 1</td>
+                        <td th:text="${reserva.personas}">2</td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="' badge--' + ${#strings.toLowerCase(reserva.estado.name())}"
+                                  th:text="${reserva.estado.etiqueta}">Confirmada</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="muted" th:if="${#lists.isEmpty(reservasHoy)}">Aún no hay reservas para hoy.</p>
+        </section>
+
+        <section class="panel">
+            <h2>Próximas reservas</h2>
+            <ul class="mini-list">
+                <li th:each="reserva : ${proximas}">
+                    <span class="mini-date" th:text="${reserva.fechaTexto} + ' · ' + ${reserva.horaTexto}">18/11 · 20:00</span>
+                    <span th:text="${reserva.cliente.nombre} + ' · ' + ${reserva.mesa.etiqueta}">María · Mesa 1</span>
+                </li>
+            </ul>
+            <p class="muted" th:if="${#lists.isEmpty(proximas)}">Sin reservas próximas.</p>
+        </section>
+    </div>
+
+    <div class="quick-links">
+        <a class="panel quick-link" th:href="@{/admin/reservas}">
+            <h3>Gestión de reservas</h3>
+            <p class="muted">Filtra por fecha y estado, confirma o cancela reservas.</p>
+        </a>
+        <a class="panel quick-link" th:href="@{/admin/mesas}">
+            <h3>Configuración de mesas</h3>
+            <p class="muted">Crea mesas, ajusta capacidad y zonas, o desactívalas.</p>
+        </a>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>

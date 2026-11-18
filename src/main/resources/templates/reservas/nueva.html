@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Elegir mesa')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: flash}"></div>
+
+<main class="shell section">
+    <a class="back" th:href="@{/}">← Cambiar fecha u horario</a>
+
+    <div class="section-head">
+        <p class="eyebrow">Paso 2 de 2</p>
+        <h1>Elige tu mesa y confirma</h1>
+        <p class="chip-row">
+            <span class="chip" th:text="${form.fecha}">2026-11-18</span>
+            <span class="chip" th:text="${form.horaTexto}">20:00</span>
+            <span class="chip" th:text="${form.personas} + ' personas'">2 personas</span>
+        </p>
+    </div>
+
+    <form method="post" th:action="@{/reservas}" th:object="${form}" class="booking-layout">
+        <input type="hidden" th:field="*{fecha}">
+        <input type="hidden" th:field="*{hora}">
+        <input type="hidden" th:field="*{personas}">
+
+        <div class="booking-main">
+            <h2>Mesas disponibles</h2>
+            <p class="alert alert--error" th:if="${#fields.hasErrors('mesaId')}" th:errors="*{mesaId}">Selecciona una mesa</p>
+            <div class="mesa-grid">
+                <label class="mesa-card" th:each="mesa : ${mesas}">
+                    <input type="radio" th:field="*{mesaId}" th:value="${mesa.id}">
+                    <span class="mesa-top">
+                        <span class="mesa-num">Mesa <b th:text="${mesa.numero}">1</b></span>
+                        <span class="mesa-cap" th:text="${mesa.capacidad} + ' pers.'">2 pers.</span>
+                    </span>
+                    <span class="mesa-zona" th:text="${mesa.zona.etiqueta}">Salón</span>
+                    <span class="mesa-desc" th:text="${mesa.descripcion}">Descripción</span>
+                    <span class="mesa-check" aria-hidden="true"></span>
+                </label>
+            </div>
+            <p class="muted" th:if="${#lists.isEmpty(mesas)}">
+                No quedan mesas para ese horario. <a th:href="@{/}">Prueba con otro horario</a>.
+            </p>
+
+            <h2 class="mt">Tus datos</h2>
+            <div class="form-grid form-grid--2">
+                <label class="field">
+                    <span>Nombre completo</span>
+                    <input type="text" th:field="*{nombre}" autocomplete="name" required>
+                    <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+                </label>
+                <label class="field">
+                    <span>Correo electrónico</span>
+                    <input type="email" th:field="*{email}" autocomplete="email" required>
+                    <span class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </label>
+                <label class="field">
+                    <span>Teléfono (opcional)</span>
+                    <input type="tel" th:field="*{telefono}" autocomplete="tel">
+                    <span class="field-error" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></span>
+                </label>
+                <label class="field">
+                    <span>Personas</span>
+                    <input type="text" th:value="${form.personas} + ' personas'" disabled>
+                </label>
+                <label class="field field--full">
+                    <span>Notas para el restaurante (opcional)</span>
+                    <textarea th:field="*{notas}" rows="3"
+                              placeholder="Alergias, celebraciones, silla para niños…"></textarea>
+                    <span class="field-error" th:if="${#fields.hasErrors('notas')}" th:errors="*{notas}"></span>
+                </label>
+            </div>
+        </div>
+
+        <aside class="panel booking-summary">
+            <h3>Resumen</h3>
+            <dl class="summary-list">
+                <div><dt>Fecha</dt><dd th:text="${form.fecha}">2026-11-18</dd></div>
+                <div><dt>Hora</dt><dd th:text="${form.horaTexto}">20:00</dd></div>
+                <div><dt>Personas</dt><dd th:text="${form.personas}">2</dd></div>
+            </dl>
+            <button type="submit" class="btn btn--primary btn--block">Confirmar reserva</button>
+            <p class="muted small">Al confirmar aceptas nuestra política de reservas: la mesa se mantiene por
+                15 minutos de tolerancia.</p>
+        </aside>
+    </form>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>

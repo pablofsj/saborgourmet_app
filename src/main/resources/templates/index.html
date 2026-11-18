@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Inicio')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: flash}"></div>
+
+<main>
+    <section class="hero shell">
+        <div class="hero-copy">
+            <p class="eyebrow">Reservas en línea</p>
+            <h1>Mesas con<br><span class="accent">carácter geométrico</span></h1>
+            <p class="lead">Elige tu horario, revisa la disponibilidad real de mesas y confirma en menos de un
+                minuto. Sin llamadas, sin esperas.</p>
+            <p class="chip-row">
+                <span class="chip chip--accent" th:text="${mesasDisponiblesHoy} + ' mesas libres hoy a las ' + ${horaSugerida}">
+                    4 mesas libres
+                </span>
+                <span class="chip">Almuerzo y cena</span>
+            </p>
+            <div class="origami-collage" aria-hidden="true">
+                <span class="fold fold--1"></span>
+                <span class="fold fold--2"></span>
+                <span class="fold fold--3"></span>
+                <span class="fold fold--4"></span>
+            </div>
+        </div>
+
+        <div class="panel booking-panel" id="reservar">
+            <h2 class="panel-title">Reserva tu mesa</h2>
+            <p class="muted">Horarios disponibles cada 30 minutos.</p>
+            <form method="get" th:action="@{/reservas/nueva}" class="form-grid">
+                <label class="field">
+                    <span>Fecha</span>
+                    <input type="date" name="fecha" required
+                           th:value="${fechaSugerida}" th:min="${hoy}" th:max="${limite}">
+                </label>
+                <label class="field">
+                    <span>Hora</span>
+                    <select name="hora" required>
+                        <option th:each="h : ${horas}" th:value="${h}" th:text="${h}"
+                                th:selected="${h == horaSugerida}">20:00</option>
+                    </select>
+                </label>
+                <label class="field">
+                    <span>Personas</span>
+                    <select name="personas">
+                        <option th:each="n : ${#numbers.sequence(1, 12)}" th:value="${n}"
+                                th:text="${n}" th:selected="${n == personasSugeridas}">2</option>
+                    </select>
+                </label>
+                <button type="submit" class="btn btn--primary btn--block">Ver mesas disponibles</button>
+            </form>
+            <p class="muted small">¿Ya tienes una reserva? <a th:href="@{/reservas/buscar}">Búscala con tu código o correo</a>.</p>
+        </div>
+    </section>
+
+    <section class="shell section" id="como-funciona">
+        <div class="section-head">
+            <p class="eyebrow">Cómo funciona</p>
+            <h2>Tres pliegues y listo</h2>
+        </div>
+        <div class="grid-3">
+            <article class="panel feature">
+                <span class="feature-num">01</span>
+                <h3>Disponibilidad real</h3>
+                <p>Consultamos las reservas vigentes y solo mostramos las mesas que caben en tu horario.</p>
+            </article>
+            <article class="panel feature">
+                <span class="feature-num">02</span>
+                <h3>Confirma en línea</h3>
+                <p>Recibes un código único para consultar, modificar o cancelar tu reserva cuando quieras.</p>
+            </article>
+            <article class="panel feature">
+                <span class="feature-num">03</span>
+                <h3>Gestión sin fricción</h3>
+                <p>El equipo del restaurante administra mesas, confirma reservas y mantiene todo al día.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="shell section" id="ambientes">
+        <div class="section-head">
+            <p class="eyebrow">Ambientes</p>
+            <h2>Elige dónde se pliega la noche</h2>
+        </div>
+        <div class="grid-3 ambientes">
+            <article class="ambiente ambiente--salon">
+                <h3>Salón principal</h3>
+                <p>Mesas amplias bajo lámparas de papel.</p>
+            </article>
+            <article class="ambiente ambiente--ventana">
+                <h3>Junto a la ventana</h3>
+                <p>Luz natural y vista a la plaza.</p>
+            </article>
+            <article class="ambiente ambiente--privado">
+                <h3>Sala privada</h3>
+                <p>Biombos geométricos para grupos.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="shell section">
+        <div class="panel info-band">
+            <div>
+                <p class="eyebrow">Horarios</p>
+                <h2>Almuerzo 12:00 – 15:30 · Cena 19:00 – 22:30</h2>
+                <p class="muted">Cada mesa se reserva por bloques de dos horas. Para grupos de más de 12 personas,
+                    escríbenos a <a href="mailto:reservas@saborgourmet.cl">reservas@saborgourmet.cl</a>.</p>
+            </div>
+            <a class="btn btn--ghost" th:href="@{/reservas/buscar}">Gestionar mi reserva</a>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>

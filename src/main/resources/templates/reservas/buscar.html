@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mis reservas')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: flash}"></div>
+
+<main class="shell section section--narrow">
+    <div class="section-head">
+        <p class="eyebrow">Gestión</p>
+        <h1>Busca tu reserva</h1>
+        <p class="lead">Ingresa el código que recibiste al reservar o el correo con el que hiciste la reserva.</p>
+    </div>
+
+    <form method="get" th:action="@{/reservas/buscar}" class="panel search-form">
+        <label class="field">
+            <span>Código o correo electrónico</span>
+            <input type="text" name="q" th:value="${q}" placeholder="SG-A1B2C3 o maria@correo.cl" required>
+        </label>
+        <button type="submit" class="btn btn--primary">Buscar</button>
+    </form>
+
+    <div th:if="${q != null and q != ''}">
+        <h2 class="mt" th:if="${!#lists.isEmpty(reservas)}"
+            th:text="${#lists.size(reservas)} + ' reserva(s) encontrada(s)'">1 reserva encontrada</h2>
+
+        <div class="result-list">
+            <a class="panel result" th:each="reserva : ${reservas}"
+               th:href="@{/reservas/{codigo}(codigo=${reserva.codigo})}">
+                <div>
+                    <span class="badge"
+                          th:classappend="' badge--' + ${#strings.toLowerCase(reserva.estado.name())}"
+                          th:text="${reserva.estado.etiqueta}">Confirmada</span>
+                    <h3 th:text="${reserva.codigo} + ' · ' + ${reserva.mesa.etiqueta}">SG-A1B2C3 · Mesa 1</h3>
+                    <p class="muted"
+                       th:text="${reserva.fechaTexto} + ' a las ' + ${reserva.horaTexto} + ' · ' + ${reserva.personas} + ' personas'">
+                        18/11/2026 a las 20:00 · 2 personas</p>
+                </div>
+                <span class="result-arrow" aria-hidden="true">→</span>
+            </a>
+        </div>
+
+        <div class="panel empty-state" th:if="${#lists.isEmpty(reservas)}">
+            <h3>No encontramos reservas</h3>
+            <p class="muted">Revisa que el código o el correo estén escritos correctamente. Si el problema continúa,
+                llámanos al +56 2 2345 6789.</p>
+            <a class="btn btn--ghost" th:href="@{/}">Hacer una reserva nueva</a>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>

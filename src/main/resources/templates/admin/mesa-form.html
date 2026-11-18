@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mesa')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: flash}"></div>
+
+<main class="shell section section--narrow">
+    <a class="back" th:href="@{/admin/mesas}">← Volver a las mesas</a>
+
+    <div class="section-head">
+        <p class="eyebrow">Administración</p>
+        <h1 th:text="${editando} ? 'Editar mesa' : 'Nueva mesa'">Nueva mesa</h1>
+    </div>
+
+    <form method="post" class="panel" th:object="${form}"
+          th:action="${editando} ? @{/admin/mesas/{id}(id=${mesa.id})} : @{/admin/mesas}">
+        <p class="alert alert--error" th:if="${error}" th:text="${error}"></p>
+
+        <div class="form-grid form-grid--2">
+            <label class="field">
+                <span>Número de mesa</span>
+                <input type="number" min="1" max="999" th:field="*{numero}" required>
+                <span class="field-error" th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"></span>
+            </label>
+            <label class="field">
+                <span>Capacidad (personas)</span>
+                <input type="number" min="1" max="12" th:field="*{capacidad}" required>
+                <span class="field-error" th:if="${#fields.hasErrors('capacidad')}" th:errors="*{capacidad}"></span>
+            </label>
+            <label class="field">
+                <span>Zona</span>
+                <select th:field="*{zona}" required>
+                    <option value="">Selecciona una zona</option>
+                    <option th:each="z : ${zonas}"
+                            th:value="${z}" th:text="${z.etiqueta}">Salón</option>
+                </select>
+                <span class="field-error" th:if="${#fields.hasErrors('zona')}" th:errors="*{zona}"></span>
+            </label>
+            <label class="field">
+                <span>Descripción</span>
+                <input type="text" th:field="*{descripcion}" maxlength="160">
+            </label>
+            <label class="field field--check field--full">
+                <input type="checkbox" th:field="*{activa}">
+                <span>Mesa activa y disponible para reservas</span>
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary"
+                    th:text="${editando} ? 'Guardar cambios' : 'Crear mesa'">Crear mesa</button>
+            <a class="btn btn--ghost" th:href="@{/admin/mesas}">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>

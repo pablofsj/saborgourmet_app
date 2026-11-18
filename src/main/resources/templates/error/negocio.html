@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('No se pudo completar')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<main class="shell section section--narrow">
+    <div class="panel empty-state">
+        <p class="eyebrow">Reservas</p>
+        <h1>No pudimos completar la operación</h1>
+        <p class="lead" th:text="${mensaje}">Mensaje</p>
+        <div class="form-actions">
+            <a class="btn btn--primary" th:href="@{/}">Volver al inicio</a>
+            <a class="btn btn--ghost" th:href="@{/reservas/buscar}">Buscar mi reserva</a>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>

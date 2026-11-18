@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Detalle de reserva')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: flash}"></div>
+
+<main class="shell section section--narrow">
+    <div class="ticket">
+        <div class="ticket-head">
+            <div>
+                <p class="eyebrow">Reserva</p>
+                <h1 th:text="${reserva.codigo}">SG-A1B2C3</h1>
+            </div>
+            <span class="badge"
+                  th:classappend="' badge--' + ${#strings.toLowerCase(reserva.estado.name())}"
+                  th:text="${reserva.estado.etiqueta}">Confirmada</span>
+        </div>
+
+        <dl class="ticket-grid">
+            <div><dt>Fecha</dt><dd th:text="${reserva.fechaLargaTexto}">miércoles 18 de noviembre</dd></div>
+            <div><dt>Hora</dt><dd th:text="${reserva.horaTexto}">20:00</dd></div>
+            <div><dt>Personas</dt><dd th:text="${reserva.personas}">2</dd></div>
+            <div><dt>Mesa</dt><dd th:text="${reserva.mesa.etiqueta}">Mesa 1</dd></div>
+            <div><dt>Zona</dt><dd th:text="${reserva.mesa.zona.etiqueta}">Ventana</dd></div>
+            <div><dt>Capacidad de la mesa</dt><dd th:text="${reserva.mesa.capacidad} + ' personas'">2 personas</dd></div>
+        </dl>
+
+        <div class="ticket-block">
+            <h2>A nombre de</h2>
+            <p><strong th:text="${reserva.cliente.nombre}">María Fernández</strong></p>
+            <p class="muted" th:text="${reserva.cliente.email}">maria@example.com</p>
+            <p class="muted" th:if="${reserva.cliente.telefono}" th:text="${reserva.cliente.telefono}">+56 9 …</p>
+        </div>
+
+        <div class="ticket-block" th:if="${reserva.notas}">
+            <h2>Notas</h2>
+            <p class="muted" th:text="${reserva.notas}">Notas de la reserva</p>
+        </div>
+
+        <div class="ticket-actions" th:if="${reserva.modificable}">
+            <a class="btn btn--ghost" th:href="@{/reservas/{codigo}/editar(codigo=${reserva.codigo})}">Modificar reserva</a>
+            <form method="post" th:action="@{/reservas/{codigo}/cancelar(codigo=${reserva.codigo})}"
+                  data-confirm="¿Seguro que quieres cancelar esta reserva?">
+                <button type="submit" class="btn btn--danger">Cancelar reserva</button>
+            </form>
+        </div>
+        <p class="muted" th:unless="${reserva.modificable}">
+            Esta reserva ya no admite cambios en línea. Si necesitas ayuda, llámanos al +56 2 2345 6789.
+        </p>
+    </div>
+
+    <div class="actions-row">
+        <a class="back" th:href="@{/reservas/buscar}">← Buscar otra reserva</a>
+        <a class="back" th:href="@{/}">Volver al inicio</a>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>

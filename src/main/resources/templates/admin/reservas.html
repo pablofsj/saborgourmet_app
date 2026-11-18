@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Reservas del restaurante')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+<div th:replace="~{fragments/layout :: flash}"></div>
+
+<main class="shell section">
+    <div class="section-head">
+        <p class="eyebrow">Administración</p>
+        <h1>Reservas del restaurante</h1>
+    </div>
+
+    <form method="get" th:action="@{/admin/reservas}" class="panel inline-form">
+        <label class="field">
+            <span>Fecha</span>
+            <input type="date" name="fecha" th:value="${fecha}">
+        </label>
+        <label class="field">
+            <span>Estado</span>
+            <select name="estado">
+                <option value="">Todos</option>
+                <option th:each="e : ${estados}" th:value="${e}" th:text="${e.etiqueta}"
+                        th:selected="${estadoSeleccionado == e}">Confirmada</option>
+            </select>
+        </label>
+        <button type="submit" class="btn btn--ghost">Filtrar</button>
+        <a class="back" th:href="@{/admin}">← Panel</a>
+    </form>
+
+    <div class="panel mt">
+        <div class="table-wrap" th:if="${!#lists.isEmpty(reservas)}">
+            <table class="table-actions">
+                <thead>
+                <tr>
+                    <th>Hora</th><th>Cliente</th><th>Contacto</th><th>Mesa</th><th>Pers.</th>
+                    <th>Estado</th><th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reserva : ${reservas}">
+                    <td><strong th:text="${reserva.horaTexto}">20:00</strong></td>
+                    <td>
+                        <a class="link" th:href="@{/reservas/{codigo}(codigo=${reserva.codigo})}"
+                           th:text="${reserva.cliente.nombre}">María</a>
+                        <span class="muted small" th:text="${reserva.codigo}">SG-A1B2C3</span>
+                    </td>
+                    <td class="small">
+                        <span th:text="${reserva.cliente.email}">correo</span><br>
+                        <span class="muted" th:text="${reserva.cliente.telefono}">teléfono</span>
+                    </td>
+                    <td th:text="${reserva.mesa.etiqueta}">Mesa 1</td>
+                    <td th:text="${reserva.personas}">2</td>
+                    <td>
+                        <span class="badge"
+                              th:classappend="' badge--' + ${#strings.toLowerCase(reserva.estado.name())}"
+                              th:text="${reserva.estado.etiqueta}">Confirmada</span>
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <form method="post" th:if="${reserva.estado.name() != 'CONFIRMADA'}"
+                                  th:action="@{/admin/reservas/{id}/estado(id=${reserva.id})}">
+                                <input type="hidden" name="estado" value="CONFIRMADA">
+                                <input type="hidden" name="fecha" th:value="${fecha}">
+                                <button type="submit" class="btn btn--tiny">Confirmar</button>
+                            </form>
+                            <form method="post" th:if="${reserva.estado.name() != 'COMPLETADA'}"
+                                  th:action="@{/admin/reservas/{id}/estado(id=${reserva.id})}">
+                                <input type="hidden" name="estado" value="COMPLETADA">
+                                <input type="hidden" name="fecha" th:value="${fecha}">
+                                <button type="submit" class="btn btn--tiny btn--ghost">Completar</button>
+                            </form>
+                            <form method="post" th:if="${reserva.estado.name() != 'CANCELADA'}"
+                                  th:action="@{/admin/reservas/{id}/estado(id=${reserva.id})}"
+                                  data-confirm="¿Cancelar la reserva de este cliente?">
+                                <input type="hidden" name="estado" value="CANCELADA">
+                                <input type="hidden" name="fecha" th:value="${fecha}">
+                                <button type="submit" class="btn btn--tiny btn--danger">Cancelar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="empty-state" th:if="${#lists.isEmpty(reservas)}">
+            <h3>Sin reservas para este filtro</h3>
+            <p class="muted">Prueba con otra fecha o quita el filtro de estado.</p>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>
