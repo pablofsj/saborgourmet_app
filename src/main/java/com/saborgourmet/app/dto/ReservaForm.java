@@ -26,7 +26,7 @@ public class ReservaForm {
 
     @NotNull(message = "Indica cuántas personas asistirán")
     @Min(value = 1, message = "La reserva es para al menos 1 persona")
-    @Max(value = 12, message = "Para más de 12 personas contáctanos por teléfono")
+    @Max(value = 5, message = "Para más de 5 personas contáctanos por teléfono")
     private Integer personas;
 
     @NotNull(message = "Selecciona una mesa disponible")

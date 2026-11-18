@@ -1,10 +1,8 @@
 package com.saborgourmet.app.model;
 
 public enum ZonaMesa {
-    SALON("Salón principal"),
-    VENTANA("Junto a la ventana"),
-    TERRAZA("Terraza"),
-    PRIVADO("Sala privada");
+    SALON("Salón"),
+    TERRAZA("Terraza");
 
     private final String etiqueta;
 

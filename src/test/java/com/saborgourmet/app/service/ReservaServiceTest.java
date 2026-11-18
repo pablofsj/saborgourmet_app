@@ -41,19 +41,29 @@ class ReservaServiceTest {
         reservaService.crear(formulario(mesa, fecha, LocalTime.of(20, 0), 2));
 
         assertThat(idsDisponibles(fecha, LocalTime.of(20, 30), 2)).doesNotContain(mesa.getId());
-        assertThat(idsDisponibles(fecha, LocalTime.of(18, 30), 2)).doesNotContain(mesa.getId());
+        assertThat(idsDisponibles(fecha, LocalTime.of(19, 0), 2)).doesNotContain(mesa.getId());
         assertThat(idsDisponibles(fecha, LocalTime.of(22, 0), 2)).contains(mesa.getId());
         assertThat(idsDisponibles(fecha.plusDays(1), LocalTime.of(20, 0), 2)).contains(mesa.getId());
     }
 
     @Test
-    void noSePuedeReservarFueraDeLosTurnosDeServicio() {
+    void noSePuedeReservarFueraDelHorarioDeAtencion() {
         Mesa mesa = crearMesa(102, 4);
         LocalDate fecha = LocalDate.now().plusDays(2);
 
-        assertThatThrownBy(() -> reservaService.crear(formulario(mesa, fecha, LocalTime.of(17, 0), 2)))
+        assertThatThrownBy(() -> reservaService.crear(formulario(mesa, fecha, LocalTime.of(11, 0), 2)))
                 .isInstanceOf(ReglaNegocioException.class)
                 .hasMessageContaining("horario");
+    }
+
+    @Test
+    void noSePuedeReservarParaMasDeCincoPersonas() {
+        Mesa mesa = crearMesa(107, 5);
+        LocalDate fecha = LocalDate.now().plusDays(2);
+
+        assertThatThrownBy(() -> reservaService.crear(formulario(mesa, fecha, LocalTime.of(13, 0), 6)))
+                .isInstanceOf(ReglaNegocioException.class)
+                .hasMessageContaining("1 a 5");
     }
 
     @Test
@@ -106,7 +116,7 @@ class ReservaServiceTest {
     }
 
     private Mesa crearMesa(int numero, int capacidad) {
-        return mesaRepository.save(new Mesa(numero, capacidad, ZonaMesa.SALON, "Mesa de prueba"));
+        return mesaRepository.save(new Mesa(numero, capacidad, ZonaMesa.SALON));
     }
 
     private ReservaForm formulario(Mesa mesa, LocalDate fecha, LocalTime hora, int personas) {

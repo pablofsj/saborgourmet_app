@@ -38,7 +38,7 @@ public class MesaService {
         if (mesaRepository.existsByNumero(form.getNumero())) {
             throw new ReglaNegocioException("Ya existe una mesa con el número " + form.getNumero());
         }
-        Mesa mesa = new Mesa(form.getNumero(), form.getCapacidad(), form.getZona(), form.getDescripcion());
+        Mesa mesa = new Mesa(form.getNumero(), form.getCapacidad(), form.getZona());
         mesa.setActiva(form.isActiva());
         return mesaRepository.save(mesa);
     }
@@ -52,7 +52,6 @@ public class MesaService {
         mesa.setNumero(form.getNumero());
         mesa.setCapacidad(form.getCapacidad());
         mesa.setZona(form.getZona());
-        mesa.setDescripcion(form.getDescripcion());
         mesa.setActiva(form.isActiva());
         return mesa;
     }
@@ -75,7 +74,6 @@ public class MesaService {
         form.setNumero(mesa.getNumero());
         form.setCapacidad(mesa.getCapacidad());
         form.setZona(mesa.getZona());
-        form.setDescripcion(mesa.getDescripcion());
         form.setActiva(mesa.isActiva());
         return form;
     }

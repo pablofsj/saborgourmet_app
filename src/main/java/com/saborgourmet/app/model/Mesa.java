@@ -30,17 +30,13 @@ public class Mesa {
     @Column(nullable = false)
     private boolean activa = true;
 
-    @Column(length = 160)
-    private String descripcion;
-
     protected Mesa() {
     }
 
-    public Mesa(Integer numero, Integer capacidad, ZonaMesa zona, String descripcion) {
+    public Mesa(Integer numero, Integer capacidad, ZonaMesa zona) {
         this.numero = numero;
         this.capacidad = capacidad;
         this.zona = zona;
-        this.descripcion = descripcion;
     }
 
     public Long getId() {
@@ -77,14 +73,6 @@ public class Mesa {
 
     public void setActiva(boolean activa) {
         this.activa = activa;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public String getEtiqueta() {

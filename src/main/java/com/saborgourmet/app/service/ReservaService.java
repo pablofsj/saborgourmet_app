@@ -152,8 +152,13 @@ public class ReservaService {
 
     @Transactional(readOnly = true)
     public List<Reserva> proximasReservas() {
+        LocalDate hoy = LocalDate.now();
+        LocalTime ahora = LocalTime.now();
         return reservaRepository
-                .findByFechaGreaterThanEqualAndEstadoNotOrderByFechaAscHoraAsc(LocalDate.now(), EstadoReserva.CANCELADA);
+                .findByFechaGreaterThanEqualAndEstadoNotOrderByFechaAscHoraAsc(hoy, EstadoReserva.CANCELADA)
+                .stream()
+                .filter(reserva -> reserva.getFecha().isAfter(hoy) || !reserva.getHora().isBefore(ahora))
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -225,8 +230,8 @@ public class ReservaService {
         if (fecha.equals(hoy) && hora.isBefore(LocalTime.now())) {
             throw new ReglaNegocioException("Ese horario de hoy ya pasó. Elige uno posterior.");
         }
-        if (personas < 1 || personas > 12) {
-            throw new ReglaNegocioException("Las reservas en línea son de 1 a 12 personas");
+        if (personas < 1 || personas > 5) {
+            throw new ReglaNegocioException("Las reservas en línea son de 1 a 5 personas");
         }
     }
 

@@ -37,9 +37,4 @@ public class HomeController {
         model.addAttribute("mesasDisponiblesHoy", reservaService.mesasDisponibles(fecha, hora, 2).size());
         return "index";
     }
-
-    @GetMapping("/nosotros")
-    public String nosotros() {
-        return "nosotros";
-    }
 }

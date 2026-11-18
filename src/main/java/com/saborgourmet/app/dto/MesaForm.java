@@ -4,7 +4,6 @@ import com.saborgourmet.app.model.ZonaMesa;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 public class MesaForm {
 
@@ -14,15 +13,12 @@ public class MesaForm {
     private Integer numero;
 
     @NotNull(message = "Indica la capacidad de la mesa")
-    @Min(value = 1, message = "La capacidad mínima es 1 persona")
-    @Max(value = 12, message = "La capacidad máxima es 12 personas")
+    @Min(value = 2, message = "La capacidad mínima es 2 personas")
+    @Max(value = 5, message = "La capacidad máxima es 5 personas")
     private Integer capacidad;
 
     @NotNull(message = "Selecciona una zona")
     private ZonaMesa zona;
-
-    @Size(max = 160, message = "La descripción no puede superar los 160 caracteres")
-    private String descripcion;
 
     private boolean activa = true;
 
@@ -48,14 +44,6 @@ public class MesaForm {
 
     public void setZona(ZonaMesa zona) {
         this.zona = zona;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public boolean isActiva() {
