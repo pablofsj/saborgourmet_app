@@ -1,0 +1,15 @@
+# Build
+target/
+
+# Base de datos local H2
+data/
+
+# Contexto local para agentes (no se publica)
+AGENTS.md
+
+# IDE / sistema
+.idea/
+*.iml
+.vscode/
+.DS_Store
+*.log
