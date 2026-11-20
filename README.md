@@ -123,6 +123,14 @@ cd saborgourmet_app
 mvnw.cmd spring-boot:run
 ```
 
+Si `mvnw.cmd spring-boot:run` falla porque no encuentra Java, en PowerShell se puede localizar el JDK y
+definir `JAVA_HOME` antes de ejecutar:
+
+```powershell
+if (-not $env:JAVA_HOME) { $jdk = Get-ChildItem "C:\Program Files\*","C:\Program Files (x86)\*","$env:LOCALAPPDATA\Programs\*" -Recurse -Filter "javac.exe" -ErrorAction SilentlyContinue | Select-Object -First 1; if ($jdk) { $env:JAVA_HOME = $jdk.Directory.Parent.FullName } }
+.\mvnw.cmd spring-boot:run
+```
+
 Abrir <http://localhost:8080>. La base H2 se crea en `./data/` y los datos de demostración se cargan
 la primera vez. Para ejecutar las pruebas: `./mvnw test` (Linux/macOS) o `mvnw.cmd test` (Windows).
 
